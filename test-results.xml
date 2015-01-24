@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="PhantomJS 1.9.8 (Mac OS X)" package="" timestamp="2015-01-24T04:37:06" id="0" hostname="5TS206084044ML.local" tests="2" errors="0" failures="0" time="0.001">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34"/>
+    </properties>
+    <testcase name="FAKE TEST" time="0" classname="PhantomJS 1.9.8 (Mac OS X)."/>
+    <testcase name="TEST boringUnitTestDemo" time="0.001" classname="PhantomJS 1.9.8 (Mac OS X)."/>
+    <system-out><![CDATA[PhantomJS 1.9.8 (Mac OS X) LOG: '[TestHelloWorld] start: FAKE TEST'
+,PhantomJS 1.9.8 (Mac OS X) LOG: '[TestHelloWorld] finished: FAKE TEST'
+,PhantomJS 1.9.8 (Mac OS X) LOG: '[TestHelloWorld] start: TEST boringUnitTestDemo'
+,PhantomJS 1.9.8 (Mac OS X) LOG: '[TestHelloWorld] finished: TEST boringUnitTestDemo'
+
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

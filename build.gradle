@@ -1,0 +1,58 @@
+plugins {
+    id "com.moowork.node" version "0.8"
+}
+
+defaultTasks 'karma'
+
+project.ext{
+    destination='bin'
+}
+
+node {
+    // Version of node to use.
+    version = '0.10.35'
+
+    // Version of npm to use.
+    npmVersion = '1.4.28'
+
+    // Base URL for fetching node distributions (change if you have a mirror).
+    distBaseUrl = 'http://nodejs.org/dist'
+
+    // If true, it will download node using above parameters.
+    // If false, it will try to use globally installed node.
+    download = true
+
+    // Set the work directory for unpacking node
+    workDir = file("${project.projectDir}/nodejs")
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}
+
+project.ext {
+    nodePath = "not-defined-yet"
+}
+
+/**
+ * 
+ * * handle the unknown flavor of node that could be installed, e.g node-v0.10.35-darwin-x64, or node-v0.10.35-linux-x64
+ info:
+ - npmInstall is defined in the node plugin, it is not defined in this build script.
+ - this must be done before the karma binary runs
+ - it's assumed that there is only one node installation in the 'nodejs' directory!
+ */
+task resolveKarmaNodePath(dependsOn: 'npmInstall') << {
+    //detect the path to the node executable and apply it to a project level variable
+        project.nodePath = file("nodejs").listFiles()[0].toString()
+        println "Local node installation: ${project.nodePath}"
+        // set PATH environment var for this task execution (Gradle ROCKS!).
+        karma.environment 'PATH', "${project.nodePath}/bin"
+        karma.commandLine "node_modules/karma/bin/karma", 'start', 'karma.conf.js'
+}
+// javascript unit testing
+task karma(type: Exec, dependsOn: 'resolveKarmaNodePath') {
+
+}
+
