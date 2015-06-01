@@ -1,12 +1,9 @@
 plugins {
-    id "com.moowork.node" version "0.8"
+    id "com.moowork.grunt" version "0.10"
 }
 
-defaultTasks 'karma'
+defaultTasks 'gruntBuildWithOpts'
 
-project.ext{
-    destination='bin'
-}
 
 node {
     // Version of node to use.
@@ -25,34 +22,23 @@ node {
     // Set the work directory for unpacking node
     workDir = file("${project.projectDir}/nodejs")
 }
+grunt {
+    // Set the directory where Gruntfile.js should be found
+    workDir = file("${project.projectDir}")
 
+    // Whether colors should output on the terminal
+    colors = true
+
+    // Whether output from Grunt should be buffered - useful when running tasks in parallel
+    bufferOutput = false
+}
+
+
+task gruntBuildWithOpts(type: GruntTask, dependsOn:'npmInstall') {
+   args = ["default", "--debug"]
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
-}
-
-project.ext {
-    nodePath = "not-defined-yet"
-}
-
-/**
- * 
- * * handle the unknown flavor of node that could be installed, e.g node-v0.10.35-darwin-x64, or node-v0.10.35-linux-x64
- info:
- - npmInstall is defined in the node plugin, it is not defined in this build script.
- - this must be done before the karma binary runs
- - it's assumed that there is only one node installation in the 'nodejs' directory!
- */
-task resolveKarmaNodePath(dependsOn: 'npmInstall') << {
-    //detect the path to the node executable and apply it to a project level variable
-        project.nodePath = file("nodejs").listFiles()[0].toString()
-        println "Local node installation: ${project.nodePath}"
-        // set PATH environment var for this task execution (Gradle ROCKS!).
-        karma.environment 'PATH', "${project.nodePath}/bin"
-        karma.commandLine "node_modules/karma/bin/karma", 'start', 'karma.conf.js'
-}
-// javascript unit testing
-task karma(type: Exec, dependsOn: 'resolveKarmaNodePath') {
-
 }
 
